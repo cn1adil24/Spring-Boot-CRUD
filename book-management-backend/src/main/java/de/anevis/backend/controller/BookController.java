@@ -2,9 +2,10 @@ package de.anevis.backend.controller;
 
 import de.anevis.backend.domain.Book;
 import de.anevis.backend.service.BookService;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/books")
@@ -17,8 +18,7 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> findAllBooks() {
-        return bookService.findAll();
+    public Page<Book> findAllBooks(Pageable page) {
+        return bookService.findAll(page);
     }
-
 }
