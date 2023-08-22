@@ -31,4 +31,10 @@ public class BookController {
     public Book getBookById(@PathVariable(required = true) long id) {
     	return bookService.findById(id);
     }
+    
+    @DeleteMapping("/{id}")
+    public String deleteBookById(@PathVariable(required = true) long id) {
+    	bookService.deleteById(id);
+    	return "Successfully deleted";
+    }
 }
