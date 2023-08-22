@@ -1,5 +1,7 @@
 package de.anevis.backend.controller;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,22 +28,22 @@ public class BookController {
     }
 
     @GetMapping
-    public Page<Book> findAllBooks(@RequestParam(required = false) String title, Pageable page) {
-        if (title == null) {
+    public Page<Book> findAllBooks(@RequestParam Optional<String> title, Pageable page) {
+        if (title.isPresent() == false) {
         	return bookService.findAll(page);
         }
         else {
-        	return bookService.findByTitle(title, page);
+        	return bookService.findByTitle(title.get(), page);
         }
     }
     
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable(required = true) long id) {
+    public Book getBookById(@PathVariable long id) {
     	return bookService.findById(id);
     }
     
     @DeleteMapping("/{id}")
-    public String deleteBookById(@PathVariable(required = true) long id) {
+    public String deleteBookById(@PathVariable long id) {
     	bookService.deleteById(id);
     	return "Successfully deleted";
     }
