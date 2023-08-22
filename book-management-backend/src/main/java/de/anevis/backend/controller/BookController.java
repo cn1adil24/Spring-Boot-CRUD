@@ -18,7 +18,12 @@ public class BookController {
     }
 
     @GetMapping
-    public Page<Book> findAllBooks(Pageable page) {
-        return bookService.findAll(page);
+    public Page<Book> findAllBooks(@RequestParam(required = false) String title, Pageable page) {
+        if (title == null) {
+        	return bookService.findAll(page);
+        }
+        else {
+        	return bookService.findByTitle(title, page);
+        }
     }
 }

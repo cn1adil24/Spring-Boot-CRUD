@@ -19,5 +19,9 @@ public class BookService {
 	public Page<Book> findAll(Pageable page) {
 		return bookRepository.findAll(page);
 	}
+	
+	public Page<Book> findByTitle(String title, Pageable page) {
+		return bookRepository.findByTitleContainingIgnoreCase(title, page);
+	}
 
 }
