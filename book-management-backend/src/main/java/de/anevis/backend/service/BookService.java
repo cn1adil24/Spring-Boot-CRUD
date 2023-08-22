@@ -2,6 +2,7 @@ package de.anevis.backend.service;
 
 import de.anevis.backend.repository.BookRepository;
 import de.anevis.backend.domain.Book;
+import de.anevis.backend.exceptions.NotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public class BookService {
 	}
 
 	public Book findById(long id) {
-		return bookRepository.findById(id).get();
+		return bookRepository.findById(id).orElseThrow(NotFoundException::new);
 	}
 	
 	public void deleteById(long id) {
