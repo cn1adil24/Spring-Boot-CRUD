@@ -41,4 +41,10 @@ public class BookService {
 		Book book = mapper.mapModelToEntity(bookModel);
 		return bookRepository.save(book);
 	}
+
+	public Book updateBook(long id, BookModel bookModel) {
+		Book book = mapper.mapModelToEntity(bookModel);
+		book.setId(id);
+		return bookRepository.save(book);
+	}
 }
