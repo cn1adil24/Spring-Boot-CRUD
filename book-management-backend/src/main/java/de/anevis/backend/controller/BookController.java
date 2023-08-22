@@ -26,4 +26,9 @@ public class BookController {
         	return bookService.findByTitle(title, page);
         }
     }
+    
+    @GetMapping("/{id}")
+    public Book getBookById(@PathVariable(required = true) long id) {
+    	return bookService.findById(id);
+    }
 }

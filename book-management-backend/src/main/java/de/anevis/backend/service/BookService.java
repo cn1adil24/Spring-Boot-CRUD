@@ -24,4 +24,7 @@ public class BookService {
 		return bookRepository.findByTitleContainingIgnoreCase(title, page);
 	}
 
+	public Book findById(long id) {
+		return bookRepository.findById(id);
+	}
 }
