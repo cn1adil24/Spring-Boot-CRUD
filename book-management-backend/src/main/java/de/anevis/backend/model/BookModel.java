@@ -1,43 +1,26 @@
-package de.anevis.backend.domain;
+package de.anevis.backend.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "books")
+import de.anevis.backend.domain.Book.BookCovers;
+
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@SuppressWarnings("unused")
-public class Book {
+public class BookModel {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(nullable = false)
 	private String title;
 
-	@Column(nullable = false)
 	private Integer firstPublishYear;
 
-	@Column(nullable = false)
 	private Integer numberOfPagesMedian;
 
-	@Column(nullable = false)
 	private String smallCover;
 
-	@Column(nullable = false)
 	private String mediumCover;
 
-	@Column(nullable = false)
 	private String largeCover;
 
-	@Column(nullable = false)
 	private String authorName;
-
-	public Long getId() {
-		return id;
-	}
 
 	public String getTitle() {
 		return title;
@@ -68,9 +51,9 @@ public class Book {
 	}
 	
 	public void setCovers(BookCovers covers) {
-		this.smallCover = covers.S;
-		this.mediumCover = covers.M;
-		this.largeCover = covers.L;
+		this.smallCover = covers.S();
+		this.mediumCover = covers.M();
+		this.largeCover = covers.L();
 	}
 
 	public String getAuthorName() {
@@ -80,22 +63,5 @@ public class Book {
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
 	}
-
-	@Override
-	public String toString() {
-		return "Book{" +
-				"id=" + id +
-				", title='" + title + '\'' +
-				", firstPublishYear=" + firstPublishYear +
-				", numberOfPagesMedian=" + numberOfPagesMedian +
-				", smallCover='" + smallCover + '\'' +
-				", mediumCover='" + mediumCover + '\'' +
-				", largeCover='" + largeCover + '\'' +
-				", authorName='" + authorName + '\'' +
-				'}';
-	}
-
-	public record BookCovers(String S, String M, String L) {
-	}
-
+	
 }
