@@ -17,7 +17,7 @@ const BookModal: React.FC<BookModalProps> = ({ book, onClose }) => {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className="modal-body">{book?.details}</div>
+          <div className="modal-body">{/*book?.details*/}</div>
         </div>
       </div>
     </div>
