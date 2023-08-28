@@ -8,21 +8,8 @@ import { Book } from './models';
 import { Page } from './models';
 import axios from 'axios';
 
-const initialBooks: Book[] = [
-  {
-    id: 1,
-    title: 'Book 1',
-    imageUrl: 'https://via.placeholder.com/50',
-  },
-  {
-    id: 2,
-    title: 'Book 2',
-    imageUrl: 'https://via.placeholder.com/50',
-  }
-];
-
 const App: React.FC = () => {
-  const [books, setBooks] = useState<Book[]>(initialBooks/*[]*/);
+  const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [filterText, setFilterText] = useState('');
 

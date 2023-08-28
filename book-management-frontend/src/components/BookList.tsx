@@ -28,7 +28,7 @@ interface BookListProps {
           {books.map((book) => (
             <tr key={book.id} onClick={() => onRowClick(book)}>
               <td>
-                <img src={book.imageUrl} alt={`${book.title} thumbnail`} />
+                <img src={book.covers.S} alt={`${book.title} thumbnail`} />
               </td>
               <td>{book.title}</td>
               <td>

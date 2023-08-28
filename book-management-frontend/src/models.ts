@@ -1,8 +1,17 @@
 export interface Book {
     id: number;
     title: string;
-    imageUrl: string;
+    author_name: string;
+    number_of_pages_median: number;
+    first_publish_year: number;
+    covers: Cover;
 };
+
+interface Cover {
+    L: string;
+    M: string;
+    S: string;
+}
 
 export interface Page {
     content: Book[];
