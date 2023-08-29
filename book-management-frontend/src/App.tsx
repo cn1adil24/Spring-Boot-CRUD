@@ -14,14 +14,7 @@ const App: React.FC = () => {
   const [filterText, setFilterText] = useState('');
 
   useEffect(() => {
-    const url = "http://localhost:8080/books?page=0&size=10"; 
-    axios.get<Page>(url)
-    .then((response) =>{
-      setBooks(response.data.content);
-    })
-    .catch(error => {
-      console.error("Error loading books:", error);
-    })
+    populateList(setBooks);
   }, []);
 
   const handleRowClick = (book: Book) => {
@@ -29,8 +22,16 @@ const App: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    const updatedBooks = books.filter((book) => book.id !== id);
-    setBooks(updatedBooks);
+    const url = "http://localhost:8080/books/" + id;
+    axios.delete(url)
+      .then(() => {
+        populateList(setBooks);
+        alert("Successfully deleted book.");
+      })
+      .catch((error) => {
+        console.error("Error deleting book:", error);
+        alert(`Error deleting book: ${error}`);
+      })
   };
 
   const handleFilterChange = (value: string) => {
@@ -76,6 +77,17 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+function populateList(setBooks: React.Dispatch<React.SetStateAction<Book[]>>) {
+  const url = "http://localhost:8080/books?page=0&size=10";
+  axios.get<Page>(url)
+    .then((response) => {
+      setBooks(response.data.content);
+    })
+    .catch(error => {
+      console.error("Error loading books:", error);
+    });
+}
 
 function addSizeToCoverURL(url: string, letter: string) {
   const parts = url.split('/');
