@@ -34,6 +34,23 @@ const App: React.FC = () => {
       })
   };
 
+  const handleEditBook = (editBookModel: AddBookModel) => {
+    const editedBook: BookModel = getBookFromAddBookModel(editBookModel);
+    const url = "http://localhost:8080/books/" + selectedBook?.id;
+  
+    axios.put<Book>(url, editedBook)
+      .then(response => {
+        const updatedBook: Book = response.data;
+        const updatedBooks = books.map(bookItem => bookItem.id === updatedBook.id ? updatedBook : bookItem);
+        setBooks(updatedBooks);
+        alert("Successfully updated book.");
+      })
+      .catch(error => {
+        console.error("Error updating book:", error);
+        alert(`Error updating book: ${error}`);
+      });
+  };
+
   const handleFilterChange = (value: string) => {
     setFilterText(value);
   };
@@ -43,17 +60,7 @@ const App: React.FC = () => {
   );
 
   const handleAddBook = (newBookModel: AddBookModel) => {
-    const newBook: BookModel = {
-      title: newBookModel.title,
-      author_name: newBookModel.author_name,
-      number_of_pages_median: newBookModel.number_of_pages_median,
-      first_publish_year: newBookModel.first_publish_year,
-      covers: {
-        L: addSizeToCoverURL(newBookModel.cover_url, 'L'),
-        M: addSizeToCoverURL(newBookModel.cover_url, 'M'),
-        S: addSizeToCoverURL(newBookModel.cover_url, 'S'),
-      }
-    };
+    const newBook: BookModel = getBookFromAddBookModel(newBookModel);
     const url = "http://localhost:8080/books"; 
     axios.post<Book>(url, newBook)
       .then((response) => {
@@ -73,10 +80,24 @@ const App: React.FC = () => {
       <AddButton onAdd={handleAddBook} />
       <FilterTextBox filterText={filterText} onFilterChange={handleFilterChange} />
       <BookList books={filteredBooks} onRowClick={handleRowClick} onDelete={handleDelete} />
-      <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />
+      <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} onEdit={handleEditBook} />
     </div>
   );
 };
+
+function getBookFromAddBookModel(newBookModel: AddBookModel): BookModel {
+  return {
+    title: newBookModel.title,
+    author_name: newBookModel.author_name,
+    number_of_pages_median: newBookModel.number_of_pages_median,
+    first_publish_year: newBookModel.first_publish_year,
+    covers: {
+      L: addSizeToCoverURL(newBookModel.cover_url, 'L'),
+      M: addSizeToCoverURL(newBookModel.cover_url, 'M'),
+      S: addSizeToCoverURL(newBookModel.cover_url, 'S'),
+    }
+  };
+}
 
 function populateList(setBooks: React.Dispatch<React.SetStateAction<Book[]>>) {
   const url = "http://localhost:8080/books?page=0&size=10";
