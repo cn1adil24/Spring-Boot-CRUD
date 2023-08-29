@@ -15,8 +15,12 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const url = "http://localhost:8080/books?page=0&size=10"; 
-    axios.get<Page>(url).then((response) =>{
+    axios.get<Page>(url)
+    .then((response) =>{
       setBooks(response.data.content);
+    })
+    .catch(error => {
+      console.error("Error loading books:", error);
     })
   }, []);
 
@@ -54,11 +58,11 @@ const App: React.FC = () => {
       .then((response) => {
         const addedBook: Book = response.data;
         setBooks([...books, addedBook]);
-        console.log("Successfully added book.");
+        alert("Successfully added book.");
       })
       .catch(error => {
         console.error("Error adding book:", error);
-        alert(error);
+        alert(`Error adding book: ${error}`);
       })
   };
 
