@@ -7,6 +7,9 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+  if (totalPages === 0)
+    return null;
+
   const maxVisiblePages = 5;
   const pageButtons = [];
 

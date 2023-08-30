@@ -32,7 +32,9 @@ interface BookListProps {
     }
   
     return (
-      <table className="table table-striped table-bordered table-hover">
+    <>
+      {books.length > 0 ? (
+        <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
             <th>Thumbnail</th>
@@ -56,6 +58,9 @@ interface BookListProps {
           ))}
         </tbody>
       </table>
+      ) : (
+      <p className="text-center no-records-message">No records found.</p> )}
+    </>
     );
   };
   
