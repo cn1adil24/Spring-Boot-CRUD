@@ -1,5 +1,7 @@
 import React from 'react';
 import { Book } from '../models';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 interface BookListProps {
     books: Book[];
@@ -9,11 +11,25 @@ interface BookListProps {
   
   const BookList: React.FC<BookListProps> = ({ books, onRowClick, onDelete }) => {
     const handleDeleteClick = (event: React.MouseEvent, id: number) => {
-      // Stop the event propagation to prevent row click event
       event.stopPropagation();
-  
-      onDelete(id);
-    };
+
+      confirmAlert({
+        title: 'Confirm Delete',
+        message: 'Are you sure you want to delete this item?',
+        buttons: [
+          {
+            label: 'Cancel',
+            onClick: () => {}
+          },
+          {
+            label: 'Delete',
+            onClick: () => {
+              onDelete(id);
+            }
+          }
+        ]
+      });
+    }
   
     return (
       <table className="table table-striped table-bordered table-hover">
