@@ -21,6 +21,16 @@ const App: React.FC = () => {
   useEffect(() => {
     populateList(0, filterText);
   }, []);
+  
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      populateList(0, filterText);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [filterText]);
 
   const handleRowClick = (book: Book) => {
     setSelectedBook(book);
@@ -60,10 +70,6 @@ const App: React.FC = () => {
     setFilterText(value);
   };
 
-  const handleApplyFilter = () => {
-    populateList(0, filterText);
-  };
-
   const handleAddBook = (newBookModel: AddBookModel) => {
     const newBook: BookModel = getBookFromAddBookModel(newBookModel);
     const url = "http://localhost:8080/books"; 
@@ -88,7 +94,7 @@ const App: React.FC = () => {
     <div className="container mt-4">
       <h1 className="fancy-title text-center">Book Management</h1>
       <FilterTextBox filterText={filterText} onFilterChange={handleFilterChange}/>
-      <Buttons onAdd={handleAddBook} onApply={handleApplyFilter} />
+      <Buttons onAdd={handleAddBook} />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       <BookList books={books} onRowClick={handleRowClick} onDelete={handleDelete} />
       <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} onEdit={handleEditBook} />

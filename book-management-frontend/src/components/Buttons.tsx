@@ -4,10 +4,9 @@ import AddBookModal from './AddBookModal';
 
 interface ButtonsProps {
   onAdd: (newBook: AddBookModel) => void;
-  onApply: () => void;
 }
 
-const Buttons: React.FC<ButtonsProps> = ({ onAdd, onApply }) => {
+const Buttons: React.FC<ButtonsProps> = ({ onAdd }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleCloseModal = () => {
@@ -20,11 +19,6 @@ const Buttons: React.FC<ButtonsProps> = ({ onAdd, onApply }) => {
         Add Book
       </button>
       <AddBookModal show={showModal} onClose={handleCloseModal} onAdd={onAdd} />
-      <div>
-        <button className="btn btn-primary mr-2" onClick={onApply}>
-          Apply filter
-        </button>
-      </div>
     </div>
   );
 };
