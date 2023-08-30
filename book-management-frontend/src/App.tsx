@@ -7,6 +7,8 @@ import Buttons from './components/Buttons';
 import { Book, AddBookModel, Cover, BookModel } from './models';
 import { Page } from './models';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -26,11 +28,11 @@ const App: React.FC = () => {
     axios.delete(url)
       .then(() => {
         populateList(setBooks, filterText);
-        alert("Successfully deleted book.");
+        toast.success("Successfully deleted book.");
       })
       .catch((error) => {
         console.error("Error deleting book:", error);
-        alert(`Error deleting book: ${error}`);
+        toast.error(`Error deleting book: ${error}`);
       })
   };
 
@@ -43,11 +45,11 @@ const App: React.FC = () => {
         const updatedBook: Book = response.data;
         const updatedBooks = books.map(bookItem => bookItem.id === updatedBook.id ? updatedBook : bookItem);
         setBooks(updatedBooks);
-        alert("Successfully updated book.");
+        toast.success("Successfully updated book.");
       })
       .catch(error => {
         console.error("Error updating book:", error);
-        alert(`Error updating book: ${error}`);
+        toast.error(`Error updating book: ${error}`);
       });
   };
 
@@ -66,21 +68,22 @@ const App: React.FC = () => {
       .then((response) => {
         const addedBook: Book = response.data;
         setBooks([...books, addedBook]);
-        alert("Successfully added book.");
+        toast.success("Successfully added book.");
       })
       .catch(error => {
         console.error("Error adding book:", error);
-        alert(`Error adding book: ${error}`);
+        toast.error(`Error adding book: ${error}`);
       })
   };
 
   return (
     <div className="container mt-4">
-      <h1 className="text-center">Book List</h1>
+      <h1 className="fancy-title text-center">Book Management</h1>
       <FilterTextBox filterText={filterText} onFilterChange={handleFilterChange}/>
       <Buttons onAdd={handleAddBook} onApply={handleApplyFilter} />
       <BookList books={books} onRowClick={handleRowClick} onDelete={handleDelete} />
       <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} onEdit={handleEditBook} />
+      <ToastContainer />
     </div>
   );
 };

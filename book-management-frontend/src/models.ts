@@ -1,9 +1,5 @@
-export interface Book {
+export interface Book extends BookInfo {
     id: number;
-    title: string;
-    author_name: string;
-    number_of_pages_median: number;
-    first_publish_year: number;
     covers: Cover;
 };
 
@@ -13,19 +9,18 @@ export interface Cover {
     S: string;
 }
 
-export interface AddBookModel {
-    title: string;
-    author_name: string;
-    number_of_pages_median: number;
-    first_publish_year: number;
+export interface AddBookModel extends BookInfo {
     cover_url: string;
 }
 
-export interface BookModel {
+interface BookInfo {
     title: string;
     author_name: string;
     number_of_pages_median: number;
     first_publish_year: number;
+}
+
+export interface BookModel extends BookInfo {
     covers: Cover;
 }
 
