@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { AddBookModel } from '../models';
 import AddBookModal from './AddBookModal';
 
-interface AddButtonProps {
+interface ButtonsProps {
   onAdd: (newBook: AddBookModel) => void;
+  onApply: () => void;
 }
 
-const AddButton: React.FC<AddButtonProps> = ({ onAdd }) => {
+const Buttons: React.FC<ButtonsProps> = ({ onAdd, onApply }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleCloseModal = () => {
@@ -14,13 +15,18 @@ const AddButton: React.FC<AddButtonProps> = ({ onAdd }) => {
   };
 
   return (
-    <div className="d-flex justify-content-end mb-2">
+    <div className="d-flex justify-content-between mb-2">
       <button className="btn btn-success" onClick={() => setShowModal(true)}>
-        Add
+        Add Book
       </button>
       <AddBookModal show={showModal} onClose={handleCloseModal} onAdd={onAdd} />
+      <div>
+        <button className="btn btn-primary mr-2" onClick={onApply}>
+          Apply filter
+        </button>
+      </div>
     </div>
   );
 };
 
-export default AddButton;
+export default Buttons;

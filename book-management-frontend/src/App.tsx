@@ -3,7 +3,7 @@ import './App.css';
 import BookList from './components/BookList';
 import BookModal from './components/BookModal';
 import FilterTextBox from './components/FilterTextBox';
-import AddButton from './components/AddButton';
+import Buttons from './components/Buttons';
 import { Book, AddBookModel, Cover, BookModel } from './models';
 import { Page } from './models';
 import axios from 'axios';
@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [filterText, setFilterText] = useState('');
 
   useEffect(() => {
-    populateList(setBooks);
+    populateList(setBooks, filterText);
   }, []);
 
   const handleRowClick = (book: Book) => {
@@ -25,7 +25,7 @@ const App: React.FC = () => {
     const url = "http://localhost:8080/books/" + id;
     axios.delete(url)
       .then(() => {
-        populateList(setBooks);
+        populateList(setBooks, filterText);
         alert("Successfully deleted book.");
       })
       .catch((error) => {
@@ -55,9 +55,9 @@ const App: React.FC = () => {
     setFilterText(value);
   };
 
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(filterText.toLowerCase())
-  );
+  const handleApplyFilter = () => {
+    populateList(setBooks, filterText);
+  };
 
   const handleAddBook = (newBookModel: AddBookModel) => {
     const newBook: BookModel = getBookFromAddBookModel(newBookModel);
@@ -77,9 +77,9 @@ const App: React.FC = () => {
   return (
     <div className="container mt-4">
       <h1 className="text-center">Book List</h1>
-      <AddButton onAdd={handleAddBook} />
-      <FilterTextBox filterText={filterText} onFilterChange={handleFilterChange} />
-      <BookList books={filteredBooks} onRowClick={handleRowClick} onDelete={handleDelete} />
+      <FilterTextBox filterText={filterText} onFilterChange={handleFilterChange}/>
+      <Buttons onAdd={handleAddBook} onApply={handleApplyFilter} />
+      <BookList books={books} onRowClick={handleRowClick} onDelete={handleDelete} />
       <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} onEdit={handleEditBook} />
     </div>
   );
@@ -99,11 +99,15 @@ function getBookFromAddBookModel(newBookModel: AddBookModel): BookModel {
   };
 }
 
-function populateList(setBooks: React.Dispatch<React.SetStateAction<Book[]>>) {
-  const url = "http://localhost:8080/books?page=0&size=10";
+function populateList(setBooks: React.Dispatch<React.SetStateAction<Book[]>>, filterText: string) {
+  let url: string = "http://localhost:8080/books?page=0&size=10";
+  if (filterText !== null && filterText !== ''){
+    url = url + `&title=${filterText}`;
+  }
   axios.get<Page>(url)
     .then((response) => {
       setBooks(response.data.content);
+      console.log("Books fetched.");
     })
     .catch(error => {
       console.error("Error loading books:", error);

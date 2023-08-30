@@ -7,15 +7,13 @@ interface FilterTextBoxProps {
 
 const FilterTextBox: React.FC<FilterTextBoxProps> = ({ filterText, onFilterChange }) => {
   return (
-    <form>
-      <input
+    <input
         type="text"
         placeholder="Filter by title..."
         className="form-control mb-3"
         value={filterText}
         onChange={(e) => onFilterChange(e.target.value)}
       />
-    </form>
   );
 };
 
