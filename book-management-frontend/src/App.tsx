@@ -10,6 +10,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Pagination from './components/Pagination';
+import CircularProgress from '@mui/material/CircularProgress'; 
 
 const App: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -17,10 +18,7 @@ const App: React.FC = () => {
   const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
-
-  useEffect(() => {
-    populateList(0, filterText);
-  }, []);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -72,9 +70,7 @@ const App: React.FC = () => {
     const newBook: BookModel = getBookFromAddBookModel(newBookModel);
     const url = "http://localhost:8080/books"; 
     axios.post<Book>(url, newBook)
-      .then((response) => {
-        const addedBook: Book = response.data;
-        setBooks([...books, addedBook]);
+      .then(() => {
         toast.success("Successfully added book.");
       })
       .catch(error => {
@@ -94,7 +90,10 @@ const App: React.FC = () => {
       <FilterTextBox filterText={filterText} onFilterChange={handleFilterChange}/>
       <Buttons onAdd={handleAddBook} />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-      <BookList books={books} onRowClick={handleRowClick} onDelete={handleDelete} />
+      {!loading ? <BookList books={books} onRowClick={handleRowClick} onDelete={handleDelete} /> :
+      <div className="spinner-container">
+        <CircularProgress />
+      </div>}
       <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} onEdit={handleEditBook} />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       <ToastContainer />
@@ -106,6 +105,7 @@ const App: React.FC = () => {
     if (filterText !== null && filterText !== ''){
       url = url + `&title=${filterText}`;
     }
+    setLoading(true);
     axios.get<Page>(url)
       .then((response) => {
         setBooks(response.data.content);
@@ -115,6 +115,9 @@ const App: React.FC = () => {
       })
       .catch(error => {
         console.error("Error loading books:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 };
