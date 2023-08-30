@@ -23,7 +23,6 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ show, onClose, onAdd }) => 
   };
 
   const handleAddBook = () => {
-    console.log(newBook);
     onAdd(newBook);
     setNewBook(getEmptyBookObj());
     onClose();
@@ -31,6 +30,7 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ show, onClose, onAdd }) => 
 
   return (
     <div className={`modal ${show ? 'show' : ''}`} tabIndex={-1} role="dialog" style={{ display: show ? 'block' : 'none' }}>
+      <form onSubmit={handleAddBook}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
@@ -42,31 +42,32 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ show, onClose, onAdd }) => 
           <div className="modal-body">
             <div className="form-group">
               <label>Title:</label>
-              <input type="text" className="form-control" name="title" value={newBook.title} onChange={handleInputChange} />
+              <input type="text" className="form-control" name="title" value={newBook.title} onChange={handleInputChange} required />
             </div>
             <div className="form-group">
               <label>Author:</label>
-              <input type="text" className="form-control" name="author_name" value={newBook.author_name} onChange={handleInputChange} />
+              <input type="text" className="form-control" name="author_name" value={newBook.author_name} onChange={handleInputChange} required />
             </div>
             <div className="form-group">
               <label>Published Year:</label>
-              <input type="number" className="form-control" name="first_publish_year" value={newBook.first_publish_year} onChange={handleInputChange} />
+              <input type="number" className="form-control" name="first_publish_year" value={newBook.first_publish_year} onChange={handleInputChange} required />
             </div>
             <div className="form-group">
               <label>Pages:</label>
-              <input type="number" className="form-control" name="number_of_pages_median" value={newBook.number_of_pages_median} onChange={handleInputChange} />
+              <input type="number" className="form-control" name="number_of_pages_median" value={newBook.number_of_pages_median} onChange={handleInputChange} required />
             </div>
             <div className="form-group">
               <label>Image URL:</label>
-              <input type="text" className="form-control" name="cover_url" value={newBook.cover_url} onChange={handleInputChange} />
+              <input type="text" className="form-control" name="cover_url" value={newBook.cover_url} onChange={handleInputChange} required />
             </div>
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
-            <button type="button" className="btn btn-primary" onClick={handleAddBook}>Add Book</button>
+            <button type="submit" className="btn btn-primary">Add Book</button>
           </div>
         </div>
       </div>
+      </form>
     </div>
   );
 };

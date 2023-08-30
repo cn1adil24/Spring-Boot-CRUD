@@ -53,7 +53,7 @@ const BookModal: React.FC<BookModalProps> = ({ book, onClose, onEdit }) => {
         <div className="modal-content">
           <div className="modal-header">
             {isEditing ? (
-              <input type="text" className="form-control" name="title" value={editedFields.title} onChange={handleInputChange} />
+              <input type="text" className="form-control" name="title" value={editedFields.title} onChange={handleInputChange} form="editBookForm" required />
             ) : (
               <h5 className="modal-title">{book?.title}</h5>
             )}
@@ -69,30 +69,30 @@ const BookModal: React.FC<BookModalProps> = ({ book, onClose, onEdit }) => {
                 </div>
                 <div className="col-md-8">
                   {isEditing ? (
-                    <>
+                    <form id="editBookForm" onSubmit={handleSaveClick}>
                       <div className="modal-body">
                         <div className="form-group">
                           <label>Author:</label>
-                          <input type="text" className="form-control" name="author_name" value={editedFields.author_name} onChange={handleInputChange} />
+                          <input type="text" className="form-control" name="author_name" value={editedFields.author_name} onChange={handleInputChange} required />
                         </div>
                         <div className="form-group">
                           <label>Published Year:</label>
-                          <input type="number" className="form-control" name="first_publish_year" value={editedFields.first_publish_year} onChange={handleInputChange} />
+                          <input type="number" className="form-control" name="first_publish_year" value={editedFields.first_publish_year} onChange={handleInputChange} required />
                         </div>
                         <div className="form-group">
                           <label>Pages:</label>
-                          <input type="number" className="form-control" name="number_of_pages_median" value={editedFields.number_of_pages_median} onChange={handleInputChange} />
+                          <input type="number" className="form-control" name="number_of_pages_median" value={editedFields.number_of_pages_median} onChange={handleInputChange} required />
                         </div>
                         <div className="form-group">
                           <label>Image URL:</label>
-                          <input type="text" className="form-control" name="cover_url" value={editedFields.cover_url} onChange={handleInputChange} />
+                          <input type="text" className="form-control" name="cover_url" value={editedFields.cover_url} onChange={handleInputChange} required />
                         </div>
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-secondary" onClick={handleCloseClick}>Close</button>
-                      <button type="button" className="btn btn-primary" onClick={handleSaveClick}>Save</button>
+                      <button type="submit" className="btn btn-primary">Save</button>
                     </div>
-                    </>
+                    </form>
                   ) : (
                     <>
                       <p><strong>Author:</strong> {book.author_name}</p>
