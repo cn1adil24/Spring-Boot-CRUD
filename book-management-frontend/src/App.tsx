@@ -54,10 +54,8 @@ const App: React.FC = () => {
     const url = "http://localhost:8080/books/" + selectedBook?.id;
   
     axios.put<Book>(url, editedBook)
-      .then(response => {
-        const updatedBook: Book = response.data;
-        const updatedBooks = books.map(bookItem => bookItem.id === updatedBook.id ? updatedBook : bookItem);
-        setBooks(updatedBooks);
+      .then(() => {
+        populateList(currentPage, filterText);
         toast.success("Successfully updated book.");
       })
       .catch(error => {
