@@ -101,7 +101,7 @@ const App: React.FC = () => {
   );
 
   function populateList(page: number, filterText: string) {
-    let url: string = `http://localhost:8080/books?page=${page}&size=10`;
+    let url: string = `http://localhost:8080/books?page=${page}&size=10&sort=id,desc`;
     if (filterText !== null && filterText !== ''){
       url = url + `&title=${filterText}`;
     }
