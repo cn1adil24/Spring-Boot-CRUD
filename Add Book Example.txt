@@ -1,0 +1,7 @@
+From UI, sample add book data:
+
+Title: Data Structures
+Author: John Doe
+Published Year: 2023
+Pages: 100
+Image URL: https://covers.openlibrary.org/b/id/13301713.jpg
