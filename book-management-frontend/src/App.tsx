@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Pagination from './components/Pagination';
 import CircularProgress from '@mui/material/CircularProgress'; 
 
+const baseURL = "http://localhost:8080/books";
+
 const App: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
@@ -35,7 +37,7 @@ const App: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    const url = "http://localhost:8080/books/" + id;
+    const url = baseURL + '/' + id;
     axios.delete(url)
       .then(() => {
         populateList(currentPage, filterText);
@@ -49,7 +51,7 @@ const App: React.FC = () => {
 
   const handleEditBook = (editBookModel: AddBookModel) => {
     const editedBook: BookModel = getBookFromAddBookModel(editBookModel);
-    const url = "http://localhost:8080/books/" + selectedBook?.id;
+    const url = baseURL + '/' + selectedBook?.id;
   
     axios.put<Book>(url, editedBook)
       .then(() => {
@@ -68,8 +70,7 @@ const App: React.FC = () => {
 
   const handleAddBook = (newBookModel: AddBookModel) => {
     const newBook: BookModel = getBookFromAddBookModel(newBookModel);
-    const url = "http://localhost:8080/books"; 
-    axios.post<Book>(url, newBook)
+    axios.post<Book>(baseURL, newBook)
       .then(() => {
         toast.success("Successfully added book.");
       })
@@ -101,7 +102,7 @@ const App: React.FC = () => {
   );
 
   function populateList(page: number, filterText: string) {
-    let url: string = `http://localhost:8080/books?page=${page}&size=10&sort=id,desc`;
+    let url: string = `${baseURL}?page=${page}&size=10&sort=id,desc`;
     if (filterText !== null && filterText !== ''){
       url = url + `&title=${filterText}`;
     }
